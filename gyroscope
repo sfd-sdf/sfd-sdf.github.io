@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="misapplication-tap-highlight" content="no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <title>陀螺仪传感器</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .log-entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .log-entry-header {
+            font-weight: bold;
+            color: #333;
+        }
+        .log-entry-details {
+            color: #555;
+        }
+    </style>
+    <script type="text/javascript">
+        var timestampArray = [];
+        var timestampArray2 = [];
+        function log(timestamp, alpha, beta, gamma) {
+             document.getElementById('alpha').textContent = alpha;
+             document.getElementById('beta').textContent = beta;
+             document.getElementById('gamma').textContent = gamma;
+             setTimestamp(timestamp, 'freq');
+        }
+        function log2(timestamp, x, y, z) {
+             document.getElementById('x').textContent = x;
+             document.getElementById('y').textContent = y;
+             document.getElementById('z').textContent = z;
+             setTimestamp2(timestamp, 'freq2');
+        }
+
+        function setTimestamp(timestamp, id) {
+            timestampArray.push(timestamp);
+            console.log(`${timestampArray.length}`);
+            if ((timestampArray.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray.length - 1; i++) {
+                    sum = sum + timestampArray[i + 1] - timestampArray[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray = [];
+            }
+        }
+        function setTimestamp2(timestamp, id) {
+            timestampArray2.push(timestamp);
+            console.log(`${timestampArray2.length}`);
+            if ((timestampArray2.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray2.length - 1; i++) {
+                    sum = sum + timestampArray2[i + 1] - timestampArray2[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray2 = [];
+            }
+        }
+        var gyrm1;
+        var gyr;
+        var gyr0;
+        var gyr1;
+        var gyr5;
+        var gyr10;
+        var gyr30;
+        var gyr60;
+        var gyr61;
+        var gyr100;
+        var gyr300;
+
+        function w3caccfreqm1() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyrm1 = new Gyroscope({frequency: -1});
+                let max_magnitude = 0;
+                gyrm1.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyrm1.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyrm1.addEventListener('reading', () => {
+                    console.log('88888888888:'+gyrm1.timestamp)
+                    log2(gyrm1.timestamp, gyrm1.x, gyrm1.y, gyrm1.z);
+                });
+                gyrm1.start();
+            });
+        }
+
+        function w3caccfreq0() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr0 = new Gyroscope({frequency: 0});
+                let max_magnitude = 0;
+                gyr0.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr0.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr0.addEventListener('reading', () => {
+                    console.log('88888888888:'+gyr0.timestamp)
+                    log2(gyr0.timestamp, gyr0.x, gyr0.y, gyr0.z);
+                });
+                gyr0.start();
+            });
+        }
+
+
+
+        function w3caccfreq1() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr1 = new Gyroscope({frequency: 1});
+                let max_magnitude = 0;
+                gyr1.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr1.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr1.addEventListener('reading', () => {
+                    console.log('88888888888:'+gyr1.timestamp)
+                    log2(gyr1.timestamp, gyr1.x, gyr1.y, gyr1.z);
+                });
+                gyr1.start();
+            });
+        }
+
+        function w3caccfreq5() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr5 = new Gyroscope({frequency: 5});
+                let max_magnitude = 0;
+                gyr5.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr5.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr5.addEventListener('reading', () => {
+                    log2(gyr5.timestamp, gyr5.x, gyr5.y, gyr5.z);
+                });
+                gyr5.start();
+            });
+        }
+
+        function w3caccfreq30() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr30 = new Gyroscope({frequency: 30});
+                let max_magnitude = 0;
+                gyr30.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr30.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr30.addEventListener('reading', () => {
+                    log2(gyr30.timestamp, gyr30.x, gyr30.y, gyr30.z);
+                });
+                gyr30.start();
+            });
+        }
+
+        function w3caccfreq60() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr60 = new Gyroscope({frequency: 60});
+                let max_magnitude = 0;
+                gyr60.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr60.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr60.addEventListener('reading', () => {
+                    log2(gyr10.timestamp, gyr60.x, gyr60.y, gyr60.z);
+                });
+                gyr60.start();
+            });
+        }
+
+        function w3caccfreq61() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr61 = new Gyroscope({frequency: 61});
+                let max_magnitude = 0;
+                gyr61.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr61.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr61.addEventListener('reading', () => {
+                    log2(gyr10.timestamp, gyr61.x, gyr61.y, gyr61.z);
+                });
+                gyr61.start();
+            });
+        }
+
+        function w3caccfreq100() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr100 = new Gyroscope({frequency: 100});
+                let max_magnitude = 0;
+                gyr100.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr100.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr100.addEventListener('reading', () => {
+                    log2(gyr100.timestamp, gyr100.x, gyr100.y, gyr100.z);
+                });
+                gyr100.start();
+            });
+        }
+
+        function w3caccfreq300() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+
+                gyr300 = new Gyroscope({frequency: 300});
+                let max_magnitude = 0;
+                gyr300.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr300.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr300.addEventListener('reading', () => {
+                    let magnitude = Math.hypot(gyr300.z, gyr300.x, gyr300.y);
+                    console.log(`[NEUJS] UpdatePlatformSensorReading Start x,y,z: ${gyr300.x}, ${gyr300.y}, ${gyr300.z} magnitude: ${magnitude} m/s2`);
+                    console.log(`[NEUJS] Timestamp: ${gyr300.timestamp}`);
+                    log2(gyr300.timestamp, gyr300.x, gyr300.y, gyr300.z);
+                });
+                gyr300.start();
+            });
+        }
+
+        function delw3cacc() {
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+                if(!!gyr){
+                  gyr.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr.stop();
+                  gry = null;
+                }
+                if(!!gyr1){
+                  gyr1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr1.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr1.stop();
+                  gry1 = null;
+                }
+                if(!!gyr5){
+                  gyr5.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr5.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr5.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr5.stop();
+                  gry5 = null;
+                }
+                if(!!gyr10){
+                  gyr10.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr10.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr10.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr10.stop();
+                  gry10 = null;
+                }
+                if(!!gyr100){
+                  gyr100.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr100.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr100.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr100.stop();
+                  gry100 = null;
+                }
+                if(!!gyr300){
+                  gyr300.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr300.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr300.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr300.stop();
+                  gry300 = null;
+                }
+                timestampArray = [];
+                timestampArray2 = [];
+            });
+        }
+
+        function checkSensorsPermission() {
+            document.getElementById('log2').textContent = '检查权限';
+            Promise.all([
+                navigator.permissions.query({ name: 'gyroscope' })
+                ]).then(results => {
+                    const gyroscopePermission = results[0];
+                    document.getElementById('log2').textContent = '检查权限成功';
+                    console.log(`[NEU]陀螺仪权限: ${gyroscopePermission.state}`);
+            }).catch(error => {
+                console.error('[NEU]权限查询失败:', error);
+                document.getElementById('log2').textContent = '检查权限失败' + error;
+            });
+        }
+
+        // ***************************Android***************************
+        function getGyr() {
+            delGyr();
+            if ('DeviceMotionEvent' in window) {
+                document.getElementById('log').textContent = '此浏览器支持DeviceMotionEvent';
+                window.addEventListener('devicemotion', handleMotionEvent, false);
+            } else {
+              document.getElementById('log').textContent = '此浏览器不支持DeviceMotionEvent';
+            }
+        }
+        function delGyr() {
+            if ('DeviceMotionEvent' in window) {
+              window.removeEventListener('devicemotion', handleMotionEvent, false);
+            } else {
+              console.log('此浏览器不支持DeviceMotionEvent');
+            }
+        }
+
+
+
+        function handleMotionEvent(event) {
+            let rotationRate = event.rotationRate;
+            if (rotationRate) {
+              log(event.timeStamp, rotationRate.alpha, rotationRate.beta, rotationRate.gamma);
+            }
+        }
+
+        function TestfrequencyIsCappedToAllowedMaximum() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'gyroscope' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use gyroscope sensor is denied.');
+                    return;
+                }
+                gyr = new Gyroscope({frequency: 560});
+                gyr.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                gyr.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                gyr.addEventListener('reading', () => {
+                    log2(gyr.timestamp, gyr.x, gyr.y, gyr.z);
+                    // var freq = OriMax.getSamplingFrequency();
+                    // document.getElementById('maxfreq').textContent = '频率上限: ' + freq;
+                });
+                gyr.start();
+                // var freq = gyr.getSamplingFrequency();
+                // gyr.stop();
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<div id="dcontent" class="dcontent">
+    <h2 style="color:blue;">输入IN：</h2>
+    <h3>w3c测试项目:</h3>
+    <ul class="dlist">
+        <button type="button" onclick="w3caccfreqm1()">w3c-freq-minus1</button>
+        <button type="button" onclick="w3caccfreq0()">w3c-freq0</button>
+        <button type="button" onclick="w3caccfreq1()">w3c-freq1</button>
+        <button type="button" onclick="w3caccfreq5()">w3c-freq5</button>
+        <button type="button" onclick="w3caccfreq30()">w3c-freq30</button>
+        <button type="button" onclick="w3caccfreq60()">w3c-freq60</button>
+        <button type="button" onclick="w3caccfreq61()">w3c-freq61</button>
+        <button type="button" onclick="w3caccfreq100()">w3c-freq100</button>
+        <button type="button" onclick="w3caccfreq300()">w3c-freq300</button>
+        <button type="button" onclick="delw3cacc()">w3cStop</button>
+        <button type="button" onclick="checkSensorsPermission()">检查传感器权限w3c</button>
+<!--        <button type="button" onclick="TestfrequencyIsCappedToAllowedMaximum()">测试频率上限</button>-->
+    </ul>
+    <h3>陀螺仪信息监听:</h3>
+    <ul class="dlist">
+        <button type="button" onclick="getGyr()">获取设备当前陀螺仪数据</button>
+        <button type="button" onclick="delGyr()">取消监听陀螺仪数据</button>
+    </ul>
+
+    <h4>不同组件:</h4>
+    <img src="icon.png" onclick="getGyr()" alt="获取设备当前加速度-img"/>
+    <dialog open> <form method="dialog">
+        <button type="button" onclick="getGyr()">"获取设备当前加速度-dialog"</button>
+    </form>
+    </dialog>
+
+
+</div>
+<div id="output">
+    <h2 style="color:red;">输出OUT：</h2>
+    <h3>w3c</h3>
+    <h2 id="log2"></h2>
+    <p>x: <span id="x">0</span></p>
+    <p>y: <span id="y">0</span></p>
+    <p>z: <span id="z">0</span></p>
+    <h1 id = "freq2">0Hz</h1>
+<!--    <h1 id="maxfreq">频率上限:0Hz</h1>-->
+
+    <h3>陀螺仪数据:</h3>
+    <h4 id = "log"></h4>
+    <p>alpha: <span id="alpha">0</span></p>
+    <p>beta: <span id="beta">0</span></p>
+    <p>gamma: <span id="gamma">0</span></p>
+    <h2>帧率：</h2>
+    <h4 id = "freq">0hz</h4>
+</div>
+</body>
+
+</html>
