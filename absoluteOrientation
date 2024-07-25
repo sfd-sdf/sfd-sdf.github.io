@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="misapplication-tap-highlight" content="no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <title>绝对方向传感器</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .log-entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .log-entry-header {
+            font-weight: bold;
+            color: #333;
+        }
+        .log-entry-details {
+            color: #555;
+        }
+    </style>
+    <script type="text/javascript">
+        var timestampArray = [];
+        var timestampArray2 = [];
+        var timestampArray3 = [];
+        function absoluteFlag(flag, absolute, id){
+            if(!flag){
+                document.getElementById(id).textContent = '';
+                return;
+            }
+            if(absolute) {
+                document.getElementById(id).textContent = absolute;
+            } else {
+                document.getElementById(id).textContent = absolute;
+            }
+        }
+        function log(timestamp, arr) {
+            document.getElementById('x').textContent = arr[0];
+            document.getElementById('y').textContent = arr[1];
+            document.getElementById('z').textContent = arr[2];
+            setTimestamp(timestamp, 'freq');
+        }
+        function log2(timestamp, arr) {
+            document.getElementById('x2').textContent = arr[0];
+            document.getElementById('y2').textContent = arr[1];
+            document.getElementById('z2').textContent = arr[2];
+            setTimestamp2(timestamp, 'freq2');
+        }
+        function log3(timestamp, arr) {
+            document.getElementById('x3').textContent = arr[0];
+            document.getElementById('y3').textContent = arr[1];
+            document.getElementById('z3').textContent = arr[2];
+            document.getElementById('w3').textContent = arr[3];
+            setTimestamp3(timestamp, 'freq3');
+        }
+        function setTimestamp(timestamp, id) {
+            timestampArray.push(timestamp);
+            console.log(`${timestampArray.length}`);
+            if ((timestampArray.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray.length - 1; i++) {
+                    sum = sum + timestampArray[i + 1] - timestampArray[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray = [];
+            }
+        }
+        function setTimestamp2(timestamp, id) {
+            timestampArray2.push(timestamp);
+            console.log(`${timestampArray2.length}`);
+            if ((timestampArray2.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray2.length - 1; i++) {
+                    sum = sum + timestampArray2[i + 1] - timestampArray2[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray2 = [];
+            }
+        }
+        function setTimestamp3(timestamp, id) {
+            timestampArray3.push(timestamp);
+            console.log(`${timestampArray3.length}`);
+            if ((timestampArray3.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray3.length - 1; i++) {
+                    sum = sum + timestampArray3[i + 1] - timestampArray3[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray3 = [];
+            }
+        }
+        var Orim1;
+        var Ori0;
+        var Ori1;
+        var Ori5;
+        var Ori10;
+        var Ori30;
+        var Ori60;
+        var Ori61;
+        var Ori100;
+        var Ori300;
+
+        function w3caccfreqm1() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Orim1 = new AbsoluteOrientationSensor({frequency: -1});
+                let max_magnitude = 0;
+                Orim1.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Orim1.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Orim1.addEventListener('reading', () => {
+                    log3(Orim1.timestamp, Orim1.quaternion)
+                });
+                Orim1.start();
+            });
+        }
+
+        function w3caccfreq0() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori0 = new AbsoluteOrientationSensor({frequency: 0});
+                let max_magnitude = 0;
+                Ori0.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori0.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori0.addEventListener('reading', () => {
+                    log3(Ori0.timestamp, Ori0.quaternion)
+                });
+                Ori0.start();
+            });
+        }
+
+        function w3caccfreq1() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                console.log(`[NEUJS] Permissions: ${result.state}`);
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori1 = new AbsoluteOrientationSensor({frequency: 1});
+                let max_magnitude = 0;
+                Ori1.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori1.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori1.addEventListener('reading', () => {
+                    log3(Ori1.timestamp, Ori1.quaternion)
+                });
+                Ori1.start();
+            });
+        }
+
+        function w3caccfreq5() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori5 = new AbsoluteOrientationSensor({frequency: 5});
+                let max_magnitude = 0;
+                Ori5.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori5.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori5.addEventListener('reading', () => {
+                    log3(Ori5.timestamp, Ori5.quaternion)
+                });
+                Ori5.start();
+            });
+        }
+
+        function w3caccfreq30() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori30 = new AbsoluteOrientationSensor({frequency: 30});
+                let max_magnitude = 0;
+                Ori30.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori30.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori30.addEventListener('reading', () => {
+                    log3(Ori30.timestamp, Ori30.quaternion)
+                });
+                Ori30.start();
+            });
+        }
+
+        function w3caccfreq60() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori60 = new AbsoluteOrientationSensor({frequency: 60});
+                let max_magnitude = 0;
+                Ori60.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori60.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori60.addEventListener('reading', () => {
+                    log3(Ori30.timestamp, Ori30.quaternion)
+                });
+                Ori60.start();
+            });
+        }
+
+        function w3caccfreq61() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori61 = new AbsoluteOrientationSensor({frequency: 61});
+                let max_magnitude = 0;
+                Ori61.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori61.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori61.addEventListener('reading', () => {
+                    log3(Ori30.timestamp, Ori30.quaternion)
+                });
+                Ori61.start();
+            });
+        }
+
+        function w3caccfreq100() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori100 = new AbsoluteOrientationSensor({frequency: 100});
+                let max_magnitude = 0;
+                Ori100.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori100.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori100.addEventListener('reading', () => {
+                    log3(Ori100.timestamp, Ori100.quaternion)
+                });
+                Ori100.start();
+            });
+        }
+
+        function w3caccfreq300() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+
+                Ori300 = new AbsoluteOrientationSensor({frequency: 300});
+                let max_magnitude = 0;
+                Ori300.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                Ori300.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                Ori300.addEventListener('reading', () => {
+                    log3(Ori300.timestamp, Ori300.quaternion)
+                });
+                Ori300.start();
+            });
+        }
+
+        function delw3cacc() {
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
+                    return;
+                }
+                if(!!Ori1){
+                    Ori1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori1.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori1.stop();
+                    Ori1 = null;
+                }
+                if(!!Ori5){
+                    Ori5.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori5.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori5.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori5.stop();
+                    Ori5 = null;
+                }
+                if(!!Ori10){
+                    Ori10.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori10.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori10.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori10.stop();
+                    Ori10 = null;
+                }
+                if(!!Ori100){
+                    Ori100.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori100.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori100.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori100.stop();
+                    Ori100 = null;
+                }
+                if(!!Ori300){
+                    Ori300.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori300.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori300.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori300.stop();
+                    Ori300 = null;
+                }
+                if(!!OriMax){
+                    OriMax.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    OriMax.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    OriMax.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    OriMax.stop();
+                    OriMax = null;
+                }
+                timestampArray = [];
+                timestampArray2 = [];
+                timestampArray3 = [];
+            });
+        }
+
+        function checkSensorsPermission() {
+            document.getElementById('log3').textContent = '检查权限';
+            Promise.all([
+                navigator.permissions.query({ name: 'accelerometer' })
+                ]).then(results => {
+                    const gyroscopePermission = results[0];
+                    document.getElementById('log3').textContent = '检查权限成功';
+                    console.log(`[NEU]方向传感器权限: ${gyroscopePermission.state}`);
+            }).catch(error => {
+                console.error('[NEU]权限查询失败:', error);
+                document.getElementById('log3').textContent = '检查权限失败' + error;
+            });
+        }
+
+        function getOri() {
+            delAcc();
+            if ('DeviceOrientationEvent' in window) {
+                document.getElementById('log').textContent = '此浏览器支持DeviceOrientationEvent';
+                window.addEventListener('deviceorientation', handleOrientationEvent, false);
+            } else {
+              document.getElementById('log').textContent = '此浏览器不支持DeviceOrientationEvent';
+            }
+        }
+        function delAcc() {
+            if ('DeviceOrientationEvent' in window) {
+              window.removeEventListener('deviceorientation', handleOrientationEvent, false);
+            } else {
+              console.log('此浏览器不支持DeviceOrientationEvent');
+            }
+        }
+        function getOri2() {
+            delAcc2();
+            if ('DeviceOrientationEvent' in window) {
+                document.getElementById('log2').textContent = '此浏览器支持deviceorientationabsolute';
+                window.addEventListener('deviceorientationabsolute', handleOrientationEvent2, false);
+            } else {
+              document.getElementById('log2').textContent = '此浏览器不支持deviceorientationabsolute';
+            }
+        }
+        function delAcc2() {
+            if ('DeviceOrientationEvent' in window) {
+              window.removeEventListener('deviceorientationabsolute', handleOrientationEvent2, false);
+            } else {
+              console.log('此浏览器不支持deviceorientationabsolute');
+            }
+        }
+
+        let toggle = false;
+        function handleOrientationEvent(event) {
+            var absolute = event.absolute;
+            var z = event.alpha;
+            var x = event.beta;
+            var y = event.gamma;
+            let arr = [x,y,z];
+            toggle = !toggle;
+            absoluteFlag(toggle, absolute, 'absolute');
+            log(event.timeStamp, arr);
+        }
+
+        let toggle2 = false;
+        function handleOrientationEvent2(event) {
+            var absolute = event.absolute;
+            var z = event.alpha;
+            var x = event.beta;
+            var y = event.gamma;
+            let arr = [x,y,z];
+            toggle2 = !toggle2;
+            absoluteFlag(toggle, absolute, 'absolute2');
+            log2(event.timeStamp, arr);
+        }
+
+        var OriMax;
+        function TestfrequencyIsCappedToAllowedMaximum() {
+            delw3cacc();
+            navigator.permissions.query({ name: 'accelerometer' }).then(result => {
+                if (result.state === 'denied') {
+                    console.log('[NEU]Permission to use accelerometer sensor is denied.');
+                    return;
+                }
+                OriMax = new AbsoluteOrientationSensor({frequency: 560});
+                OriMax.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
+                OriMax.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
+                OriMax.addEventListener('reading', () => {
+                    console.log(`[NEU]quaternion: ${OriMax.quaternion}`);
+                    log3(OriMax.timestamp, OriMax.quaternion);
+                    // var freq = OriMax.getSamplingFrequency();
+                    // document.getElementById('maxfreq').textContent = '频率上限: ' + freq;
+                });
+                OriMax.start();
+                // OriMax.stop();
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="dcontent" class="dcontent">
+    <h3>w3c测试项目:</h3>
+    <ul class="dlist">
+      <button type="button" onclick="w3caccfreqm1()">w3c-freq-minus1</button>
+      <button type="button" onclick="w3caccfreq0()">w3c-freq0</button>
+      <button type="button" onclick="w3caccfreq1()">w3c-freq1</button>
+      <button type="button" onclick="w3caccfreq5()">w3c-freq5</button>
+      <button type="button" onclick="w3caccfreq30()">w3c-freq30</button>
+      <button type="button" onclick="w3caccfreq60()">w3c-freq60</button>
+      <button type="button" onclick="w3caccfreq61()">w3c-freq61</button>
+      <button type="button" onclick="w3caccfreq100()">w3c-freq100</button>
+      <button type="button" onclick="w3caccfreq300()">w3c-freq300</button>
+      <button type="button" onclick="delw3cacc()">w3cStop</button>
+      <button type="button" onclick="checkSensorsPermission()">检查传感器权限w3c</button>
+<!--      <button type="button" onclick="TestfrequencyIsCappedToAllowedMaximum()">测试频率上限</button>-->
+    </ul>
+    <h3>方向传感器监听:</h3>
+    <ul class="dlist">
+<!--      <li><button type="button" onclick="getOri()">获取设备当前方向</button></li>-->
+<!--      <li><button type="button" onclick="delAcc()">取消监听方向变化</button></li>-->
+      <li><button type="button" onclick="getOri2()">获取设备当前方向(绝对位置)</button></li>
+      <li><button type="button" onclick="delAcc2()">取消监听方向变化(绝对位置)</button></li>
+    </ul>
+
+    <h4>不同组件:</h4>
+    <img src="icon.png" onclick="getOri2()" alt="获取设备当前加速度-img"/>
+    <dialog open> <form method="dialog">
+        <button type="button" onclick="getOri2()">"获取设备当前加速度-dialog"</button>
+    </form>
+    </dialog>
+
+</div>
+<div id="output">
+    <h1>w3c</h1>
+    <h2 id = "log3"></h2>
+    <p>x: <span id="x3">0</span></p>
+    <p>y: <span id="y3">0</span></p>
+    <p>z: <span id="z3">0</span></p>
+    <p>w: <span id="w3">0</span></p>
+    <h1 id = "freq3">0Hz</h1>
+<!--    <h1 id="maxfreq">频率上限:0Hz</h1>-->
+
+<!--    <h1>方向数据</h1>-->
+<!--    <h2 id = "log"></h2>-->
+<!--    <p>absolute: <span id="absolute"></span></p>-->
+<!--    <p>x: <span id="x">0</span></p>-->
+<!--    <p>y: <span id="y">0</span></p>-->
+<!--    <p>z: <span id="z">0</span></p>-->
+<!--    <h1 id = "freq">0Hz</h1>-->
+
+    <h1>方向数据:绝对位置</h1>
+    <h2 id = "log2"></h2>
+    <p>absolute: <span id="absolute2"></span></p>
+    <p>x: <span id="x2">0</span></p>
+    <p>y: <span id="y2">0</span></p>
+    <p>z: <span id="z2">0</span></p>
+    <h1 id = "freq2">0Hz</h1>
+</div>
+</body>
+
+</html>
