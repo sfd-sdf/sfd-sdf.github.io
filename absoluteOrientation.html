@@ -313,6 +313,13 @@
                     console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
                     return;
                 }
+                if(!!Orim1){
+                    Orim1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Orim1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Orim1.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Orim1.stop();
+                    Orim1 = null;
+                }
                 if(!!Ori0){
                     Ori0.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
                     Ori0.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
