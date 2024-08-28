@@ -27,6 +27,7 @@
     </style>
     <script type="text/javascript">
         var timestampArray = [];
+        var timestampArray1 = [];
         var timestampArray2 = [];
         var timestampArray3 = [];
         function absoluteFlag(flag, absolute, id){
@@ -45,6 +46,12 @@
             document.getElementById('y').textContent = arr[1];
             document.getElementById('z').textContent = arr[2];
             setTimestamp(timestamp, 'freq');
+        }
+        function log1(timestamp, arr) {
+            document.getElementById('x1').textContent = arr[0];
+            document.getElementById('y1').textContent = arr[1];
+            document.getElementById('z1').textContent = arr[2];
+            setTimestamp1(timestamp, 'freq1');
         }
         function log2(timestamp, arr) {
             document.getElementById('x2').textContent = arr[0];
@@ -85,6 +92,20 @@
                 var feq = 1000 / avg;
                 document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
                 timestampArray2 = [];
+            }
+        }
+        function setTimestamp1(timestamp, id) {
+            timestampArray1.push(timestamp);
+            console.log(`${timestampArray1.length}`);
+            if ((timestampArray1.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray1.length - 1; i++) {
+                    sum = sum + timestampArray1[i + 1] - timestampArray1[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray1 = [];
             }
         }
         function setTimestamp3(timestamp, id) {
@@ -223,7 +244,7 @@
                 Ori60.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
                 Ori60.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
                 Ori60.addEventListener('reading', () => {
-                    log3(Ori30.timestamp, Ori30.quaternion)
+                    log3(Ori60.timestamp, Ori60.quaternion)
                 });
                 Ori60.start();
             });
@@ -242,7 +263,7 @@
                 Ori61.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
                 Ori61.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
                 Ori61.addEventListener('reading', () => {
-                    log3(Ori30.timestamp, Ori30.quaternion)
+                    log3(Ori61.timestamp, Ori61.quaternion)
                 });
                 Ori61.start();
             });
@@ -292,6 +313,13 @@
                     console.log('[NEU]Permission to use AbsoluteOrientationSensor sensor is denied.');
                     return;
                 }
+                if(!!Ori0){
+                    Ori0.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori0.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori0.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori0.stop();
+                    Ori0 = null;
+                }
                 if(!!Ori1){
                     Ori1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
                     Ori1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
@@ -312,6 +340,27 @@
                     Ori10.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
                     Ori10.stop();
                     Ori10 = null;
+                }
+                if(!!Ori30){
+                    Ori30.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori30.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori30.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori30.stop();
+                    Ori30 = null;
+                }
+                if(!!Ori60){
+                    Ori60.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori60.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori60.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori60.stop();
+                    Ori60 = null;
+                }
+                if(!!Ori61){
+                    Ori61.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                    Ori61.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                    Ori61.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                    Ori61.stop();
+                    Ori61 = null;
                 }
                 if(!!Ori100){
                     Ori100.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
@@ -335,6 +384,7 @@
                     OriMax = null;
                 }
                 timestampArray = [];
+                timestampArray1 = [];
                 timestampArray2 = [];
                 timestampArray3 = [];
             });
@@ -354,6 +404,20 @@
             });
         }
 
+        function checkSensorsPermission() {
+            document.getElementById('log1').textContent = '检查权限';
+            Promise.all([
+                navigator.permissions.query({ name: 'accelerometer' })
+                ]).then(results => {
+                    const gyroscopePermission = results[0];
+                    document.getElementById('log1').textContent = '检查权限成功';
+                    console.log(`[NEU]方向传感器权限: ${gyroscopePermission.state}`);
+            }).catch(error => {
+                console.error('[NEU]权限查询失败:', error);
+                document.getElementById('log1').textContent = '检查权限失败' + error;
+            });
+        }
+
         function getOri() {
             delAcc();
             if ('DeviceOrientationEvent' in window) {
@@ -370,6 +434,7 @@
               console.log('此浏览器不支持DeviceOrientationEvent');
             }
         }
+
         function getOri2() {
             delAcc2();
             if ('DeviceOrientationEvent' in window) {
@@ -387,6 +452,23 @@
             }
         }
 
+        function getOri1() {
+            delAcc1();
+            if ('DeviceOrientationEvent' in window) {
+                document.getElementById('log1').textContent = '此浏览器支持deviceorientationabsolute';
+                window.addEventListener('deviceorientationabsolute', handleOrientationEvent1, false);
+            } else {
+              document.getElementById('log1').textContent = '此浏览器不支持deviceorientationabsolute';
+            }
+        }
+        function delAcc1() {
+            if ('DeviceOrientationEvent' in window) {
+              window.removeEventListener('deviceorientationabsolute', handleOrientationEvent1, false);
+            } else {
+              console.log('此浏览器不支持deviceorientationabsolute');
+            }
+        }
+
         let toggle = false;
         function handleOrientationEvent(event) {
             var absolute = event.absolute;
@@ -397,6 +479,18 @@
             toggle = !toggle;
             absoluteFlag(toggle, absolute, 'absolute');
             log(event.timeStamp, arr);
+        }
+
+        let toggle1 = false;
+        function handleOrientationEvent1(event) {
+            var absolute = event.absolute;
+            var z = event.alpha;
+            var x = event.beta;
+            var y = event.gamma;
+            let arr = [x,y,z];
+            toggle1 = !toggle1;
+            absoluteFlag(toggle, absolute, 'absolute1');
+            log1(event.timeStamp, arr);
         }
 
         let toggle2 = false;
@@ -459,6 +553,13 @@
       <li><button type="button" onclick="delAcc2()">取消监听方向变化(绝对位置)</button></li>
     </ul>
 
+    <h4>不同组件:</h4>
+    <button type="button" onclick="location.href='https://donglym.github.io/Accelerometer-iframe.html'">页面跳转</button>
+    <img src="icon.png" onclick="getOri1()" alt="获取设备当前加速度-img"/>
+    <dialog open> <form method="dialog">
+        <button type="button" onclick="getOri2()">"获取设备当前加速度-dialog"</button>
+    </form>
+    </dialog>
 
 </div>
 <div id="output">
@@ -486,6 +587,14 @@
     <p>y: <span id="y2">0</span></p>
     <p>z: <span id="z2">0</span></p>
     <h1 id = "freq2">0Hz</h1>
+
+    <h1>img组件方向数据:绝对位置</h1>
+    <h2 id = "log1"></h2>
+    <p>absolute: <span id="absolute1"></span></p>
+    <p>x: <span id="x1">0</span></p>
+    <p>y: <span id="y1">0</span></p>
+    <p>z: <span id="z1">0</span></p>
+    <h1 id = "freq1">0Hz</h1>
 </div>
 </body>
 
