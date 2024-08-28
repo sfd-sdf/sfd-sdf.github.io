@@ -27,12 +27,19 @@
     </style>
     <script type="text/javascript">
         var timestampArray = [];
+        var timestampArray1 = [];
         var timestampArray2 = [];
         function log(timestamp, alpha, beta, gamma) {
              document.getElementById('alpha').textContent = alpha;
              document.getElementById('beta').textContent = beta;
              document.getElementById('gamma').textContent = gamma;
              setTimestamp(timestamp, 'freq');
+        }
+        function log1(timestamp, alpha, beta, gamma) {
+             document.getElementById('alpha1').textContent = alpha;
+             document.getElementById('beta1').textContent = beta;
+             document.getElementById('gamma1').textContent = gamma;
+             setTimestamp1(timestamp, 'freq1');
         }
         function log2(timestamp, x, y, z) {
              document.getElementById('x').textContent = x;
@@ -53,6 +60,20 @@
                 var feq = 1000 / avg;
                 document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
                 timestampArray = [];
+            }
+        }
+        function setTimestamp1(timestamp, id) {
+            timestampArray1.push(timestamp);
+            console.log(`${timestampArray1.length}`);
+            if ((timestampArray1.length - 60) === 0) {
+                var sum = 0;
+                for (var i = 0; i < timestampArray1.length - 1; i++) {
+                    sum = sum + timestampArray1[i + 1] - timestampArray1[i];
+                }
+                var avg = sum / 59;
+                var feq = 1000 / avg;
+                document.getElementById(id).textContent = feq.toFixed(2) + " HZ";
+                timestampArray1 = [];
             }
         }
         function setTimestamp2(timestamp, id) {
@@ -197,7 +218,7 @@
                 gyr60.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
                 gyr60.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
                 gyr60.addEventListener('reading', () => {
-                    log2(gyr10.timestamp, gyr60.x, gyr60.y, gyr60.z);
+                    log2(gyr60.timestamp, gyr60.x, gyr60.y, gyr60.z);
                 });
                 gyr60.start();
             });
@@ -216,7 +237,7 @@
                 gyr61.addEventListener('activate', () => console.log('[NEU]Ready to measure.'));
                 gyr61.addEventListener('error', error => console.log(`[NEU]Error: ${error.name}`));
                 gyr61.addEventListener('reading', () => {
-                    log2(gyr10.timestamp, gyr61.x, gyr61.y, gyr61.z);
+                    log2(gyr61.timestamp, gyr61.x, gyr61.y, gyr61.z);
                 });
                 gyr61.start();
             });
@@ -276,6 +297,13 @@
                   gyr.stop();
                   gry = null;
                 }
+                if(!!gyr0){
+                  gyr0.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr0.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr0.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr0.stop();
+                  gyr0 = null;
+                }
                 if(!!gyr1){
                   gyr1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
                   gyr1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
@@ -296,6 +324,27 @@
                   gyr10.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
                   gyr10.stop();
                   gry10 = null;
+                }
+                if(!!gyr30){
+                  gyr30.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr30.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr30.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr30.stop();
+                  gyr30 = null;
+                }
+                if(!!gyr60){
+                  gyr60.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr60.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr60.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr60.stop();
+                  gyr60 = null;
+                }
+                if(!!gyr61){
+                  gyr61.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyr61.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyr61.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyr61.stop();
+                  gyr61 = null;
                 }
                 if(!!gyr100){
                   gyr100.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
@@ -329,6 +378,19 @@
                 document.getElementById('log2').textContent = '检查权限失败' + error;
             });
         }
+        function checkSensorsPermission() {
+            document.getElementById('log1').textContent = '检查权限';
+            Promise.all([
+                navigator.permissions.query({ name: 'gyroscope' })
+                ]).then(results => {
+                    const gyroscopePermission = results[0];
+                    document.getElementById('log1').textContent = '检查权限成功';
+                    console.log(`[NEU]陀螺仪权限: ${gyroscopePermission.state}`);
+            }).catch(error => {
+                console.error('[NEU]权限查询失败:', error);
+                document.getElementById('log1').textContent = '检查权限失败' + error;
+            });
+        }
 
         // ***************************Android***************************
         function getGyr() {
@@ -348,12 +410,36 @@
             }
         }
 
+        function getGyr1() {
+            delGyr1();
+            if ('DeviceMotionEvent' in window) {
+                document.getElementById('log1').textContent = '此浏览器支持DeviceMotionEvent';
+                window.addEventListener('devicemotion', handleMotionEvent1, false);
+            } else {
+              document.getElementById('log1').textContent = '此浏览器不支持DeviceMotionEvent';
+            }
+        }
+        function delGyr1() {
+            if ('DeviceMotionEvent' in window) {
+              window.removeEventListener('devicemotion', handleMotionEvent1, false);
+            } else {
+              console.log1('此浏览器不支持DeviceMotionEvent');
+            }
+        }
+
 
 
         function handleMotionEvent(event) {
             let rotationRate = event.rotationRate;
             if (rotationRate) {
               log(event.timeStamp, rotationRate.alpha, rotationRate.beta, rotationRate.gamma);
+            }
+        }
+
+        function handleMotionEvent1(event) {
+            let rotationRate = event.rotationRate;
+            if (rotationRate) {
+              log1(event.timeStamp, rotationRate.alpha, rotationRate.beta, rotationRate.gamma);
             }
         }
 
@@ -405,6 +491,13 @@
         <button type="button" onclick="delGyr()">取消监听陀螺仪数据</button>
     </ul>
 
+    <h4>不同组件:</h4>
+    <button type="button" onclick="location.href='https://donglym.github.io/Accelerometer-iframe.html'">页面跳转</button>
+    <img src="icon.png" onclick="getGyr1()" alt="获取设备当前加速度-img"/>
+    <dialog open> <form method="dialog">
+        <button type="button" onclick="getGyr()">"获取设备当前加速度-dialog"</button>
+    </form>
+    </dialog>
 
 
 </div>
@@ -425,6 +518,15 @@
     <p>gamma: <span id="gamma">0</span></p>
     <h2>帧率：</h2>
     <h4 id = "freq">0hz</h4>
+
+    <h3>img组件陀螺仪数据:</h3>
+    <h4 id = "log1"></h4>
+    <p>alpha: <span id="alpha1">0</span></p>
+    <p>beta: <span id="beta1">0</span></p>
+    <p>gamma: <span id="gamma1">0</span></p>
+    <h2>帧率：</h2>
+    <h4 id = "freq1">0hz</h4>
+
 </div>
 </body>
 
