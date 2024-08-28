@@ -297,6 +297,13 @@
                   gyr.stop();
                   gry = null;
                 }
+                if(!!gyrm1){
+                  gyrm1.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
+                  gyrm1.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
+                  gyrm1.removeEventListener('reading', () => console.log('[NEU]Ready to remove.'));
+                  gyrm1.stop();
+                  gyrm1 = null;
+                }
                 if(!!gyr0){
                   gyr0.removeEventListener('activate', () => console.log('[NEU]Ready to remove.'));
                   gyr0.removeEventListener('error', () => console.log('[NEU]Ready to remove.'));
