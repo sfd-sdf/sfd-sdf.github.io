@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ug">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿拉伯语下拉框</title>
+    <style>
+        /* 设置全局方向为从右到左 */
+        body {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body>
+  <select name="example" id="example">
+      <option value="">يرجى اختيار خيار</option>
+      <option value="option1">هذا نص طويل جدًا قد يمتد إلى عدة سطورهذا نص طويل جدًا قد يمتد إلى عدة سطور</option>
+      <option value="option2">هذا نص آخر طويل قد يمتد إلى عدة سطورهذا نص آخر طويل قد يمتد إلى عدة سطور</option>
+      <option value="option3">خيار قصير</option>
+  </select>
+</body>
+</html>
