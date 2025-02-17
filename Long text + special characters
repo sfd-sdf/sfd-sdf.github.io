@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select 标签 - 长文本和特殊字符</title>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+
+    /* Select 样式 */
+    select {
+      width: 400px; /* 更宽的宽度以适应长文本 */
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      outline: none; /* 移除聚焦时的默认轮廓 */
+    }
+
+    /* 鼠标悬停效果 */
+    select:hover {
+      border-color: #0056b3;
+    }
+
+    /* 聚焦效果 */
+    select:focus {
+      border-color: #0056b3;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+
+    /* 选项样式 */
+    option {
+      white-space: normal; /* 允许选项文本换行 */
+    }
+  </style>
+</head>
+<body>
+  <select>
+    <option value="" disabled selected>请选择一个选项</option>
+    <option value="1">这是一个普通的选项</option>
+    <option value="2">这是一个包含特殊字符的选项：\nThis is a new line\t</option>
+    <option value="3">这是一个非常长的选项，包含很多文字和特殊字符：🌍 这是一个测试选项，用于展示长文本和特殊字符的组合效果。Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</option>
+    <option value="4">数学符号选项：∫ ∑ √ ∞ ≈ ≠ ≤ ≥∫ ∑ √ ∞ ≈ ≠ ≤ ≥∫ ∑ √ ∞ ≈ ≠ ≤ ≥∫ ∑ √ ∞ ≈ ≠ ≤ ≥∫ ∑ √ ∞ ≈ ≠ ≤ ≥∫ ∑ √ ∞ ≈ ≠ ≤ ≥</option>
+    <option value="5">表情符号选项：😊 🚀 🎉 🌈 🍕 🚀 🎉 🌈 🍕 🚀 🎉 🌈 🍕 🚀 🎉 🌈 🍕 🚀 🎉 🌈 🍕 🚀 🎉 🌈 🍕</option>
+  </select>
+</body>
+</html>
