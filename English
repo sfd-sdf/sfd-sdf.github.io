@@ -1,0 +1,6 @@
+<select name="example" id="example">
+    <option value="">Please select an option</option>
+    <option value="option1">This is a very long option text that might span multiple lines</option>
+    <option value="option2">This is another long option text that might also span multiple lines</option>
+    <option value="option3">Short option</option>
+</select>
