@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复杂样式的 Select（右对齐）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* 自定义字体 */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* 自定义样式 */
+    .custom-select {
+      position: relative;
+      width: 300px;
+    }
+
+    .custom-select select {
+      width: 100%;
+      padding: 15px 40px 15px 20px; /* 调整内边距 */
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ffffff, #f1f1f1); /* 渐变背景 */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: right; /* 文本右对齐 */
+    }
+
+    /* 自定义箭头 */
+    .custom-select::after {
+      content: "▼";
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #007bff;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    /* 鼠标悬停效果 */
+    .custom-select select:hover {
+      border-color: #0056b3;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 聚焦效果 */
+    .custom-select select:focus {
+      border-color: #0056b3;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      outline: none;
+    }
+
+    /* 选项样式 */
+    .custom-select option {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 400;
+      background-color: #fff;
+      color: #333;
+      text-align: right; /* 选项文本右对齐 */
+    }
+
+    /* 禁用状态样式 */
+    .custom-select select:disabled {
+      background-color: #e9ecef;
+      color: #6c757d;
+      cursor: not-allowed;
+      border-color: #ced4da;
+    }
+
+    /* 选中选项样式 */
+    .custom-select option:checked {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    /* 下拉菜单整体样式 */
+    .custom-select select::-ms-expand {
+      display: none; /* 隐藏 IE 的默认箭头 */
+    }
+  </style>
+</head>
+<body>
+  <div class="custom-select">
+    <select id="styledSelect">
+      <option value="" disabled selected>请选择一个选项</option>
+      <option value="1">选项 11111111111111111111111111111111111111111111111111</option>
+      <option value="2">选项 22222222222222222222222222222222222222222222222222</option>
+      <option value="3">选项 33333333333333333333333333333333333333333333333333</option>
+      <option value="4">选项 44444444444444444444444444444444444444444444444444</option>
+      <option value="5">选项 55555555555555555555555555555555555555555555555555</option>
+    </select>
+  </div>
+</body>
+</html>
