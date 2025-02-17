@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select with 100 Options</title>
+</head>
+<body>
+    <h2>Select with 100 Options</h2>
+    <label for="example">Choose an option:</label>
+    <select name="example" id="example" size="1">
+        <!-- Options will be generated dynamically -->
+    </select>
+
+    <script>
+        const selectElement = document.getElementById('example');
+
+        // Generate 100 options
+        for (let i = 1; i <= 100; i++) {
+            const option = document.createElement('option');
+            option.value = `option${i}`;
+            option.textContent = `This is option ${i} with 100 characters: ${'a'.repeat(80)}`; // 100 characters in total
+            selectElement.appendChild(option);
+        }
+    </script>
+</body>
+</html>
