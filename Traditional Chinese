@@ -1,0 +1,6 @@
+<select name="example" id="example">
+    <option value="">請選擇一個選項</option>
+    <option value="option1">這是一個非常長的選項文字，可能會佔據多行</option>
+    <option value="option2">這是另一個較長的選項文字，同樣可能會佔據多行</option>
+    <option value="option3">短選項</option>
+</select>
