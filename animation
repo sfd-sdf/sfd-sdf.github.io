@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Select Dropdown with Enhanced Effects</title>
+    <style>
+        .custom-select {
+            position: relative;
+            width: 300px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-select .selected {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-select .selected::after {
+            content: '▼';
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select .options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 2px solid #ccc;
+            border-top: none;
+            background-color: #fff;
+            z-index: 10;
+            border-radius: 0 0 10px 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px; /* Add some space between the selected item and options */
+        }
+
+        .custom-select .options.open {
+            display: block;
+        }
+
+        .custom-select .option {
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .custom-select .option:hover {
+            background-color: #f2f2f2;
+        }
+
+        .custom-select .option.enter {
+            animation: bounceIn 0.7s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Extra animation for the selected item */
+        .custom-select .selected.open::after {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-select">
+        <div class="selected">Select an Option</div>
+        <div class="options">
+            <div class="option" data-value="option1">Option 1</div>
+            <div class="option" data-value="option2">Option 2</div>
+            <div class="option" data-value="option3">Option 3</div>
+            <div class="option" data-value="option4">Option 4</div>
+        </div>
+    </div>
+
+    <script>
+        const customSelect = document.querySelector('.custom-select');
+        const selected = customSelect.querySelector('.selected');
+        const options = customSelect.querySelector('.options');
+        const optionElements = customSelect.querySelectorAll('.option');
+
+        selected.addEventListener('click', () => {
+            options.classList.toggle('open');
+            selected.classList.toggle('open');
+        });
+
+        optionElements.forEach(option => {
+            option.addEventListener('click', () => {
+                selected.textContent = option.textContent;
+                selected.dataset.value = option.dataset.value;
+                options.classList.remove('open');
+                selected.classList.remove('open');
+
+                // Remove previous animation classes
+                optionElements.forEach(opt => opt.classList.remove('enter'));
+                // Add animation class to the clicked option
+                option.classList.add('enter');
+            });
+        });
+
+        document.addEventListener('click', e => {
+            if (!customSelect.contains(e.target)) {
+                options.classList.remove('open');
+                selected.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
