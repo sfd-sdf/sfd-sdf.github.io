@@ -1,0 +1,6 @@
+<select name="example" id="example">
+    <option value="">请选择一个选项 / الرجاء اختيار خيار</option>
+    <option value="option1">这是一个非常长的选项文本，可能会占据多行 / هذا نص طويل جدًا قد يمتد إلى عدة سطور</option>
+    <option value="option2">这是另一个较长的选项文本，同样可能会占据多行 / هذا نص آخر طويل قد يمتد إلى عدة سطور</option>
+    <option value="option3">短选项 / خيار قصير</option>
+</select>
