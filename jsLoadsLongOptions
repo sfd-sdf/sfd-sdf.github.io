@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load One Option at a Time</title>
+    <style>
+        select {
+            width: 100%;
+            height: 50px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Dynamic Select Option Example</h2>
+    <label for="dynamicSelect">Choose an option:</label>
+    <select id="dynamicSelect">
+        <!-- Options will be loaded dynamically -->
+    </select>
+
+    <button id="loadOption">Load Option</button>
+
+    <script>
+        // Define an array of options to be loaded
+        const options = [
+            { value: "option1", text: "This is the first optionThis is the first optionThis is the first optionThis is the first option" },
+            { value: "option2", text: "This is the second optionThis is the second optionThis is the second optionThis is the second option" },
+            { value: "option3", text: "This is the third optionThis is the third optionThis is the third option" },
+            { value: "option4", text: "This is the fourth optionThis is the fourth optionThis is the fourth option" }
+        ];
+
+        // Initialize a counter to keep track of loaded options
+        let optionIndex = 0;
+
+        // Function to dynamically load one option into the select element
+        function loadOption() {
+            const selectElement = document.getElementById('dynamicSelect');
+
+            // Check if there are more options to load
+            if (optionIndex < options.length) {
+                const currentOption = options[optionIndex];
+                const optionElement = document.createElement('option');
+                optionElement.value = currentOption.value;
+                optionElement.textContent = currentOption.text;
+                selectElement.appendChild(optionElement);
+
+                // Increment the counter
+                optionIndex++;
+
+                // Optionally, disable the button if all options are loaded
+                if (optionIndex === options.length) {
+                    document.getElementById('loadOption').disabled = true;
+                    alert("All options have been loaded!");
+                }
+            }
+        }
+
+        // Add event listener to the button to load the option
+        document.getElementById('loadOption').addEventListener('click', loadOption);
+    </script>
+</body>
+</html>
