@@ -1,0 +1,10 @@
+<label for="browser">选择浏览器：</label>
+<input list="browsers" id="browser" name="browser" autocomplete="on">
+
+<datalist id="browsers">
+  <option value="这是一个非常长的选项文本，可能会占据多行">
+  <option value="这是另一个较长的选项文本，同样可能会占据多行">
+  <option value="短选项">
+  <option value="这是另一个非常长的选项文本，可能会占据多行">
+  <option value="这是最后一个较长的选项文本，同样可能会占据多行">
+</datalist>
