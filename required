@@ -1,0 +1,11 @@
+<form>
+  <label for="cars">Please select an option(required：</label>
+  <select id="cars" name="cars" required>
+    <option value="">请选择</option>
+    <option value="option1">这是一个非常长的选项文本，可能会占据多行</option>
+    <option value="option2">这是另一个较长的选项文本，同样可能会占据多行</option>
+    <option value="option3">短选项</option>
+  </select>
+  <br><br>
+  <input type="submit" value="提交">
+</form>
