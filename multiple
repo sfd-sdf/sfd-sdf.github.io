@@ -1,0 +1,7 @@
+<select multiple size="5">
+  <option value="1">这是一个非常长的选项文本，可能会占据多行</option>
+  <option value="2">这是另一个较长的选项文本，同样可能会占据多行</option>
+  <option value="3">短选项</option>
+  <option value="4">这是另一个非常长的选项文本，可能会占据多行</option>
+  <option value="5">这是最后一个较长的选项文本，同样可能会占据多行</option>
+</select>
