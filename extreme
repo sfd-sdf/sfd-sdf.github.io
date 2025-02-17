@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select 标签 - 长选项</title>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+
+    /* Select 样式 */
+    select {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      outline: none; /* 移除聚焦时的默认轮廓 */
+    }
+
+    /* 鼠标悬停效果 */
+    select:hover {
+      border-color: #0056b3;
+    }
+
+    /* 聚焦效果 */
+    select:focus {
+      border-color: #0056b3;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <select>
+    <option value="" disabled selected>请选择一个选项</option>
+    <option value="1">选项 1</option>
+    <option value="2">选项 2</option>
+    <option value="3" id="longOption">动态生成的长选项</option>
+    <option value="4">选项 4</option>
+    <option value="5">选项 5</option>
+  </select>
+
+  <script>
+    const longOption = document.getElementById('longOption');
+    const longText = '这是一个很长的选项内容，'.repeat(50); // 生成 1000 字符的文本
+    longOption.textContent = longText;
+  </script>
+</body>
+</html>
