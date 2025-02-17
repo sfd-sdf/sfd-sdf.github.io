@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ug">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>维吾尔语下拉框</title>
+    <style>
+        /* 设置全局方向为从右到左 */
+        body {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body>
+    <select name="example" id="example">
+        <option value="">خىزاق بىلەن بىر خىزاق بىلەن</option>
+        <option value="option1">بۇ بىر تۇرىڭلىق تېكىست بولىدۇ، بۇ تۇرىڭلىق تېكىست بولىدۇ</option>
+        <option value="option2">بۇ بىرىكىن تۇرىڭلىق تېكىست بولىدۇ، بۇ بىرىكىن تۇرىڭلىق تېكىست بولىدۇ</option>
+        <option value="option3">تۇرىڭلىق تېكىست</option>
+    </select>
+</body>
+</html>
