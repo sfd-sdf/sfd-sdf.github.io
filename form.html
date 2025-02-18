@@ -3,21 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select with Form Attribute</title>
+    <title>Test Select Form Attribute</title>
 </head>
 <body>
+    <h2>Test Select Form Attribute</h2>
+
+    <!-- 定义一个表单 -->
     <form id="myForm" action="/submit" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
         <br><br>
-        
         <button type="submit">Submit</button>
     </form>
-    
-    <select form="myForm" name="example">
-        <option value="option1">这是一个非常长的选项文本，可能会占据多行</option>
-        <option value="option2">这是另一个较长的选项文本，同样可能会占据多行</option>
-        <option value="option3">短选项</option>
+
+    <!-- 在表单外部定义一个 select，通过 form 属性关联到表单 -->
+    <select name="example" form="myForm">
+        <option value="option1">Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、Option 1、</option>
+        <option value="option2">Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、Option 2、</option>
+        <option value="option3">Option 3</option>
     </select>
+
+    <script>
+        // 捕获表单提交事件
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            // 获取表单数据
+            const formData = new FormData(this);
+            const selectValue = formData.get('example'); // 获取 select 的值
+            const nameValue = formData.get('name'); // 获取输入框的值
+
+            // 显示结果
+            alert(`Name: ${nameValue}\nSelected Option: ${selectValue}`);
+        });
+    </script>
 </body>
 </html>
