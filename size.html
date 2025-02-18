@@ -2,20 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select size=2 可见行数为2</title>
-<!--     <style>
+    <title>Select size</title>
+    <!-- <style>
         select {
             width: 200px; 
         }
     </style> -->
 </head>
 <body>
-    <h2>Select size=2 可见行数为2</h2>
+    <h2>点击button可 修改size</h2>
     <label for="example">Choose an option:</label>
-    <select size="1">
-        <option value="option1">这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行</option>
-        <option value="option2">这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行，这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行，这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行</option>
+    <select id="example" size="1">
+        <option value="option1">这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会多占据行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行</option>
+        <option value="option2">这是另一个较长的选项文本，同样可能会占据多行。这是另一个的较长选项文本，同样可能会占据多行，这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行，这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行</option>
         <option value="option3">短选项</option>
     </select>
+
+    <br><br>
+    <button onclick="changeSize(1)">设置为单选</button>
+    <button onclick="changeSize(2)">设置为双行显示</button>
+    <button onclick="changeSize(3)">设置为三行显示</button>
+
+    <script>
+        function changeSize(size) {
+            document.getElementById("example").size = size;
+        }
+    </script>
 </body>
 </html>
