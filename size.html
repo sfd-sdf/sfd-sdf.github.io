@@ -1,5 +1,22 @@
-<select name="example" size='2'>
-    <option value="option1">这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行</option>
-    <option value="option2">这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行</option>
-    <option value="option3">短选项</option>
-</select>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Width Select</title>
+    <style>
+        select {
+            width: 200px; 
+        }
+    </style>
+</head>
+<body>
+    <h2>Select with Adaptive Width</h2>
+    <label for="example">Choose an option:</label>
+    <select name="example" id="example" size="2">
+        <option value="option1">这是一个非常长的选项文本，可能会占据多行，这是一个非常长的选项文本，可能会占据多行</option>
+        <option value="option2">这是另一个较长的选项文本，同样可能会占据多行。这是另一个较长的选项文本，同样可能会占据多行</option>
+        <option value="option3">短选项</option>
+    </select>
+</body>
+</html>
