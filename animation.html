@@ -3,130 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Select Dropdown with Enhanced Effects</title>
+    <title>Animated Select with Color Change</title>
     <style>
-        .custom-select {
-            position: relative;
+        select {
             width: 300px;
-            margin: 20px auto;
-            font-family: Arial, sans-serif;
-        }
-
-        .custom-select .selected {
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .custom-select .selected::after {
-            content: '▼';
-            margin-left: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .custom-select .options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            border: 2px solid #ccc;
-            border-top: none;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             background-color: #fff;
-            z-index: 10;
-            border-radius: 0 0 10px 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px; /* Add some space between the selected item and options */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
 
-        .custom-select .options.open {
-            display: block;
+        .option-animation {
+            opacity: 0;
+            background-color: #fff; /* 初始背景颜色 */
+            transition: opacity 0.5s ease, background-color 0.5s ease;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
         }
 
-        .custom-select .option {
-            padding: 15px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .custom-select .option:hover {
-            background-color: #f2f2f2;
-        }
-
-        .custom-select .option.enter {
-            animation: bounceIn 0.7s ease;
-        }
-
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Extra animation for the selected item */
-        .custom-select .selected.open::after {
-            transform: rotate(180deg);
+        .option-animation.active {
+            opacity: 1;
+            background-color: #f0f8ff; /* 选中后的背景颜色 */
         }
     </style>
 </head>
 <body>
-    <div class="custom-select">
-        <div class="selected">Select an Option</div>
-        <div class="options">
-            <div class="option" data-value="option1">Option 1111111111111111111111111111111111111111111111111111111111111111111111111111</div>
-            <div class="option" data-value="option2">Option 222222222222222222222222222222222222222222222222222222222222222222222222222</div>
-            <div class="option" data-value="option3">Option 3333333333333333333333333333333333333333333333333333333333333333333333333333</div>
-            <div class="option" data-value="option4">Option 44444444444444444444444444444444444444444444444444444444444444444444444444444444444444</div>
-        </div>
+    <h2>Animated Select with Color Change</h2>
+    <label for="example">Choose an option:</label>
+    <select name="example" id="example">
+        <option value="option1">这是一个非常长的选项文本，可能会占据多行；这是一个非常长的选项文本，可能会占据多行</option>
+        <option value="option2">这是另一个较长的选项文本，同样可能会占据多行；这是另一个较长的选项文本，同样可能会占据多行</option>
+        <option value="option3">短选项</option>
+        <option value="option4">这是第四个选项，内容稍微长一些</option>
+        <option value="option5">第五个选项</option>
+    </select>
+
+    <div id="selectedOption" class="option-animation">
+        <!-- 动画效果将在这里显示 -->
     </div>
 
     <script>
-        const customSelect = document.querySelector('.custom-select');
-        const selected = customSelect.querySelector('.selected');
-        const options = customSelect.querySelector('.options');
-        const optionElements = customSelect.querySelectorAll('.option');
+        const selectElement = document.getElementById('example');
+        const selectedOptionElement = document.getElementById('selectedOption');
 
-        selected.addEventListener('click', () => {
-            options.classList.toggle('open');
-            selected.classList.toggle('open');
-        });
+        selectElement.addEventListener('change', () => {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            selectedOptionElement.textContent = selectedOption.textContent;
+            selectedOptionElement.classList.add('active');
 
-        optionElements.forEach(option => {
-            option.addEventListener('click', () => {
-                selected.textContent = option.textContent;
-                selected.dataset.value = option.dataset.value;
-                options.classList.remove('open');
-                selected.classList.remove('open');
-
-                // Remove previous animation classes
-                optionElements.forEach(opt => opt.classList.remove('enter'));
-                // Add animation class to the clicked option
-                option.classList.add('enter');
-            });
-        });
-
-        document.addEventListener('click', e => {
-            if (!customSelect.contains(e.target)) {
-                options.classList.remove('open');
-                selected.classList.remove('open');
-            }
+            // 移除动画类，以便下次选择时重新触发动画
+            setTimeout(() => {
+                selectedOptionElement.classList.remove('active');
+            }, 500); // 动画持续时间为0.5秒
         });
     </script>
 </body>
