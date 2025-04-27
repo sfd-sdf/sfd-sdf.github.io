@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>富文本新闻编辑器</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .news-container {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .news-list {
+            flex: 2;
+        }
+        
+        
+        .news-item .images-item {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .images-item{
+            justify-content: space-between;
+            display: flex;
+        }
+        .news-title {
+            font-size: 1.4em;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        
+        .news-date {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        
+        .highlight {
+            background-color: #fffde7;
+            padding: 2px 4px;
+        }
+        
+        .underline {
+            text-decoration: underline;
+        }
+        
+        .important {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .quote {
+            font-style: italic;
+            border-left: 3px solid #3498db;
+            padding-left: 15px;
+            margin: 15px 0;
+            color: #555;
+        }
+        
+        /* 富文本编辑器样式 */
+
+        
+  
+        
+        #rich-text-editor {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: white;
+            overflow-y: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+   
+        
+
+        
+     
+     
+    </style>
+</head>
+<body>
+    <h1>富文本新闻编辑器</h1>
+    <div class="news-container">
+        <div class="news-list">
+            <div class="news-item">
+                <h2 class="news-title">React 19 正式发布：带来全新编译器</h2>
+                <p class="news-date">2023年11月15日</p>
+                <p>React 团队今日正式发布了<span class="important">React 19</span>，这是近年来最重要的更新之一。新版本引入了<span class="underline">React Compiler</span>，这是一个优化编译器，可以自动优化你的React代码。</p>
+                
+                <p class="quote">"React Compiler 将彻底改变我们编写React应用的方式，减少手动优化的需求。" - React核心团队成员</p>
+                <p>😀😃😄😁😆😅🤣😂🙂🙃😉😊😇🥰😍🤩😘</p>
+                
+            </div>
+            <div class="images-item">
+            <image src="./images/image1.jpg"></image>
+            <image src="./images/image2.jpg"></image>
+            <image src="./images/image3.jpg"></image>
+            <image src="./images/image4.jpg"></image>
+            <image src="./images/image5.jpg"></image>
+            <image src="./images/image6.jpg"></image>
+            <image src="./images/image7.jpg"></image>
+            </div>
+            <div id="custom-news-container">
+                <!-- 动态添加的新闻将出现在这里 -->
+            </div>
+            <div class="editor-box">
+          
+                <label for="rich-text-editor"><h2 class="news-title">添加内容:</h2></label>
+            
+                <div id="rich-text-editor" contenteditable="true"></div>
+            
+            </div>
+        </div>
+        
+     
+    </div>
+
+    
+
+
+    <script>
+    
+        
+        // 添加自定义新闻
+        function addCustomNews() {
+
+            const content = document.getElementById('rich-text-editor').innerHTML;
+            
+            if ( !content) {
+                alert('请填写内容');
+                return;
+            }
+            
+            
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            newsItem.innerHTML = `
+                ${content}
+            `;
+            
+            document.getElementById('custom-news-container').prepend(newsItem);
+            
+            // 清空表单
+            document.getElementById('rich-text-editor').innerHTML = '';
+        }
+        
+
+    </script>
+</body>
+</html>
