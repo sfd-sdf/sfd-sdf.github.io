@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ActivateContent演示</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            background-color: #f5f6fa;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin: 1.5rem 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .link-section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.3rem 0;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #2980b9;
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        input[type="submit"] {
+            background-color: #27ae60;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #219a52;
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin: 1.5rem 0 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+<h2>The open() Method</h2>
+<p>单击按钮可打开一个新的浏览器窗口。</p>
+
+<div class="section-title">window.open 方法</div>
+<div class="button-group">
+    <button onclick="myFunction()">打开微博CN (asd窗口)</button>
+    <button onclick="myFunction2()">打开example (asd窗口)</button>
+    <button onclick="myFunction3()">打开微博COM (asd窗口)</button>
+    <button onclick="myFunction4()">打开微博CN (qwe窗口)</button>
+</div>
+
+<div class="section-title">a标签演示</div>
+<div class="link-section">
+    <a href="https://www.weibo.cn" target="_blank">访问微博CN_blank</a>
+    <a href="https://www.qq.cn" target="_blank">访问QQ中文网_blank</a>
+    <a href="https://www.weibo.com" target="_blank">访问微博国际版_blank</a>
+    <a href="https://example.com" target="asd">在新窗口打开示例网站asd窗口</a>
+    <a href="https://example.com" onclick="window.open(this.href, 'asd'); return false;">跳转到asd窗口</a>
+</div>
+
+<div class="section-title">表单演示</div>
+<form action="https://example.com" method="get" target="asd">
+    <label for="fname">名字：</label>
+    <input type="text" id="fname" name="fname" >
+
+    <label for="lname">姓氏：</label>
+    <input type="text" id="lname" name="lname" >
+
+    <input type="submit" value="提交表单">
+</form>
+
+
+<div class="section-title">指定iframe打开演示</div>
+<iframe name="myIframe" style="width: 500px;
+        height:300px border: 1 px solida
+        black;"></iframe>
+
+<a href="https://www.example.com"
+   target="myIframe">在 iframe 中打开</a>
+</body>
+<script>
+    // 保持原有JavaScript代码不变
+    function myFunction() { window.open("https://www.weibo.cn","asd"); }
+    function myFunction2() { window.open("https://www.example.com","asd"); }
+    function myFunction3() { window.open("https://www.weibo.com","asd"); }
+    function myFunction4() { window.open("https://www.weibo.cn","qwe"); }
+</script>
+</body>
+</html>
