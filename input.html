@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码输入框样式示例</title>
+    <style>
+        /* 基础密码输入框样式 */
+        input[type='password'] {
+            padding: 12px 15px;
+            margin: 8px 0;
+            width: 250px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        /* 聚焦状态 */
+        input[type='password']:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+            outline: none;
+            background-color: white;
+        }
+
+        /* 错误状态 */
+        input[type='password'].error {
+            border-color: #f44336;
+            animation: shake 0.5s;
+        }
+
+        /* 验证成功状态 */
+        input[type='password'].success {
+            border-color: #4CAF50;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%234CAF50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        /* 显示密码切换按钮 */
+        .password-container {
+            position: relative;
+            display: inline-block;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+        .toggle-password:hover {
+            color: #333;
+        }
+
+        /* 密码强度提示 */
+        .strength-meter {
+            height: 5px;
+            width: 0;
+            background: #ddd;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        /* 抖动动画 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <h1>密码输入框样式演示</h1>
+    
+    <form id="passwordForm">
+        <div class="password-container">
+            <input 
+                type="password" 
+                id="passwordInput" 
+                placeholder="请输入密码" 
+                minlength="8"
+                required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                title="至少8个字符，包含大小写字母和数字"
+            >
+            <span class="toggle-password">👁️</span>
+        </div>
+        <div class="strength-meter" id="strengthMeter"></div>
+        
+        <button type="submit">提交</button>
+    </form>
+
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const togglePassword = document.querySelector('.toggle-password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        const form = document.getElementById('passwordForm');
+
+        // 显示/隐藏密码切换
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.textContent = type === 'password' ? '👁️' : '🔒';
+        });
+
+        // 密码强度检测
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+            
+            // 长度检测
+            if (password.length > 0) strength += 20;
+            if (password.length >= 8) strength += 20;
+            
+            // 复杂度检测
+            if (/[a-z]/.test(password)) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/\d/.test(password)) strength += 20;
+            
+            // 更新强度条
+            strengthMeter.style.width = `${strength}%`;
+            
+            // 更新颜色
+            if (strength < 40) {
+                strengthMeter.style.backgroundColor = '#f44336';
+            } else if (strength < 80) {
+                strengthMeter.style.backgroundColor = '#ff9800';
+            } else {
+                strengthMeter.style.backgroundColor = '#4CAF50';
+            }
+        });
+
+        // 表单提交验证
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (passwordInput.validity.valid) {
+                passwordInput.classList.remove('error');
+                passwordInput.classList.add('success');
+                alert('密码验证成功！');
+            } else {
+                passwordInput.classList.add('error');
+                passwordInput.focus();
+            }
+        });
+
+        // 输入时移除错误状态
+        passwordInput.addEventListener('input', () => {
+            passwordInput.classList.remove('error');
+        });
+    </script>
+</body>
+</html>
