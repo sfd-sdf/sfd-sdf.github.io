@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:ns="http://example.com/ns">
+<head>
+    <title>命名空间选择器测试</title>
+    <style>
+        /* 匹配所有 ns 命名空间下的元素 */
+        ns|* {
+            border: 2px solid red;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p>普通元素（不匹配 ns|*）</p>
+    <ns:div>这个元素会被 ns|* 选中（红色边框）</ns:div>
+</body>
+</html>
