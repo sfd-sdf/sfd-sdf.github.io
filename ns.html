@@ -1,17 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:ns="http://baidu.com/ns">
+<html lang="en">
 <head>
-    <title>命名空间选择器测试</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Page with Inline CSS</title>
     <style>
-        /* 匹配所有 ns 命名空间下的元素 */
-        ns|* {
-            border: 2px solid red;
-            padding: 10px;
+        /* 设置整个页面的背景颜色为浅灰色 */
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 设置按钮的样式 */
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* 设置按钮悬停时的样式 */
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <p>普通元素（不匹配 ns|*）</p>
-    <ns:div>这个元素会被 ns|* 选中（红色边框）</ns:div>
+    <h1>Welcome to My Simple Page</h1>
+    <p>This is a paragraph of text in the simple page. The background of the page is a light gray color as specified in the CSS.</p>
+    <button>Click Me</button>
+
+    <script>
+        // You can add JavaScript code here if needed
+        document.querySelector('button').addEventListener('click', function() {
+            alert('Button was clicked!');
+        });
+    </script>
 </body>
 </html>
