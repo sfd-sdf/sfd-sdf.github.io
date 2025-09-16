@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片元素在不同HTML标签中的应用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(to right, #3494e6, #ec6ead);
+            border-radius: 10px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 25px 0 15px;
+            color: #2c3e50;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .tag-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .tag-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .tag-name {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tag-name::before {
+            content: "<";
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+
+        .tag-name::after {
+            content: ">";
+            color: #2c3e50;
+            margin-left: 5px;
+        }
+
+        .description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .image-container {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        li {
+            padding: 10px;
+            margin: 10px 0;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #bdc3c7;
+        }
+
+        .image-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+
+        .tag {
+            color: #ff6b6b;
+        }
+
+        .attribute {
+            color: #ffd43b;
+        }
+
+        .value {
+            color: #a5d8ff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 原始样式保留 */
+        .img-example {
+            width: 800px;
+            height: 100px;
+        }
+
+        .original-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        function showFallbackImage(img) {
+            // 设置备用图片
+            img.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb';
+            img.alt = '备用图片：美丽的风景';
+
+            // 更新状态
+            const container = img.parentElement;
+            const statusElements = container.querySelectorAll('.status');
+            statusElements.forEach(el => {
+                if (el.classList.contains('status-error')) {
+                    el.textContent = '已显示替代图片';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>图片元素在不同HTML标签中的应用</h1>
+        <p>探索图片元素在各种HTML容器中的使用场景</p>
+    </header>
+
+    <!-- 原始内容 -->
+    <div class="original-container">
+        <p class="text-green-600 bg-gray-100 p-3 rounded text-center text-5xl">img 标签</p>
+
+        <h1>img 标签 有效src url和有alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="山脉景观" width="400" height="200">
+
+        <h1>img 标签 有效src url和空alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="" width="400" height="200">
+
+        <h1>img 标签有效src url和无alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" width="400" height="200">
+
+        <h1>img 标签 无效src url，有alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fbssss" alt="山脉景观" width="400" height="200">
+
+        <h1>img 标签 无效src url，空alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fbssss" alt="" width="400" height="200">
+
+        <h1>img 标签 无效src url无alt</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fbssss" width="400" height="200">
+
+        <h1>img 标签 缺src url 有alt</h1>
+        <img alt="山脉景观" width="400" height="200">
+
+        <h1>img 标签 缺src url ，无alt</h1>
+        <img width="400" height="200">
+
+        <h1>img 标签 缺src url ，空alt</h1>
+        <img alt="" width="400" height="200">
+
+        <h1>img 标签 无效的图片格式</h1>
+        <img src="https://www.w3schools.com/html/mov_bbb.mp4" width="400" height="200">
+
+        <h1>img 标签 带有onerror处理的图片</h1>
+        <img src="https://example.com/nonexistent-image.jpg" onerror="showFallbackImage(this)" width="400" height="200">
+
+        <h1>鼠标悬浮在图片上时显示的 "提示文本"</h1>
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" title="点击查看详情">
+
+        <h1>图片加载方式</h1>
+        滚动到可视区域时再加载：<img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" loading="lazy">
+        页面加载时立即加载：<img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" loading="eager">
+    </div>
+
+    <!-- 新增内容 -->
+    <section class="tag-section">
+        <h2 class="tag-name">div标签</h2>
+        <p class="description">最通用的容器标签，用于布局和样式分组</p>
+        <div class="image-container">
+            <div style="padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="div中的图片" width="400" height="200">
+            </div>
+            <p class="image-info">放置在div中的图片元素</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">figure标签</h2>
+        <p class="description">专门用于包含媒体内容，通常与figcaption一起使用</p>
+        <div class="image-container">
+            <figure>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="山脉景观" width="400" height="200">
+                <figcaption>图1: 美丽的山脉景观</figcaption>
+            </figure>
+            <p class="image-info">使用figure标签包装的图片元素</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">a标签</h2>
+        <p class="description">链接中可以包含图片元素，创建可点击的图片</p>
+        <div class="image-container">
+            <a href="https://unsplash.com" target="_blank">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="可点击的图片" width="400" height="200">
+            </a>
+            <p class="image-info">点击图片将在新标签页中打开Unsplash网站</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">picture标签</h2>
+        <p class="description">用于响应式图像，根据设备特性提供不同版本的图像</p>
+        <div class="image-container">
+            <picture>
+                <source media="(min-width: 800px)" srcset="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
+                <source media="(min-width: 400px)" srcset="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="响应式图片" style="width:auto;">
+            </picture>
+            <p class="image-info">使用picture标签提供响应式图片</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">td标签</h2>
+        <p class="description">表格单元格中可以包含图片元素</p>
+        <div class="image-container">
+            <table>
+                <tr>
+                    <th>产品名称</th>
+                    <th>产品图片</th>
+                    <th>价格</th>
+                </tr>
+                <tr>
+                    <td>山脉照片</td>
+                    <td>
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="山脉照片" width="150" height="100">
+                    </td>
+                    <td>$29.99</td>
+                </tr>
+                <tr>
+                    <td>风景照片</td>
+                    <td>
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="风景照片" width="150" height="100">
+                    </td>
+                    <td>$39.99</td>
+                </tr>
+            </table>
+            <p class="image-info">表格单元格中的图片元素</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">button标签</h2>
+        <p class="description">按钮中可以包含图片元素，创建图标按钮</p>
+        <div class="image-container">
+            <button>
+                <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="保存图标" width="20" height="20">
+                保存
+            </button>
+            <button>
+                <img src="https://cdn-icons-png.flaticon.com/512/565/565577.png" alt="删除图标" width="20" height="20">
+                删除
+            </button>
+            <button>
+                <img src="https://cdn-icons-png.flaticon.com/512/565/565618.png" alt="分享图标" width="20" height="20">
+                分享
+            </button>
+            <p class="image-info">按钮中包含图片元素</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">li标签</h2>
+        <p class="description">列表项中可以包含图片元素</p>
+        <div class="image-container">
+            <ul>
+                <li>
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="列表图片1" width="100" height="70">
+                    列表项1 - 包含图片
+                </li>
+                <li>
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="列表图片2" width="100" height="70">
+                    列表项2 - 包含图片
+                </li>
+                <li>
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="列表图片3" width="100" height="70">
+                    列表项3 - 包含图片
+                </li>
+            </ul>
+            <p class="image-info">列表项中的图片元素</p>
+        </div>
+
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">object标签</h2>
+        <p class="description">object标签可以用于嵌入图片内容</p>
+        <div class="image-container">
+            <object data="https://images.unsplash.com/photo-1506744038136-46273834b3fb" type="image/jpeg" width="400" height="200">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="备用图片">
+            </object>
+            <p class="image-info">使用object标签嵌入图片</p>
+        </div>
+    </section>
+
+    <section class="tag-section">
+        <h2 class="tag-name">embed标签</h2>
+        <p class="description">embed标签也可以用于嵌入图片内容</p>
+        <div class="image-container">
+            <embed src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" type="image/jpeg" width="400" height="200">
+            <p class="image-info">使用embed标签嵌入图片</p>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2023 图片元素应用示例 | 展示图片在各种HTML标签中的使用</p>
+    </footer>
+</div>
+</body>
+</html>
